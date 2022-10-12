@@ -1,12 +1,14 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { AuthorizationButton } from '@src/components/RequestUserAuthorization';
-import { accessTokenPostResponseState } from '@src/atoms/accessTokenPostResponse';
+import { refreshTokenPostResponseState } from '@src/atoms/refreshTokenPostResponse';
 
 export const Index: React.FC = () => {
-  const accessTokenPostResponse = useRecoilValue(accessTokenPostResponseState);
+  const refreshTokenPostResponse = useRecoilValue(
+    refreshTokenPostResponseState
+  );
 
-  if (!accessTokenPostResponse.access_token) {
+  if (!refreshTokenPostResponse.access_token) {
     return (
       <div>
         <AuthorizationButton />

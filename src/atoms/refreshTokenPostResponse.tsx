@@ -1,19 +1,17 @@
 import { atom } from 'recoil';
 
-export type AccessTokenPostResponse = {
+export type RefreshTokenPostResponse = {
   access_token: string;
   expires_in: number;
-  refresh_token: string;
   scope: string;
   token_type: 'Bearer';
 };
 
-export const accessTokenPostResponseState = atom<AccessTokenPostResponse>({
+export const refreshTokenPostResponseState = atom<RefreshTokenPostResponse>({
   key: 'accessTokenPostResponse',
   default: {
     access_token: '',
     expires_in: 0,
-    refresh_token: '',
     scope: '',
     token_type: 'Bearer'
   }
