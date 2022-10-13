@@ -13,10 +13,10 @@ const Component: React.FC = () => {
   const requestQueries = new URLSearchParams(queries).toString();
 
   return (
-    <a href={`${import.meta.env.VITE_SPOTIFY_AUTH_URL}?${requestQueries}`}>
-      Request User Authorization
+    <a href={`${import.meta.env.VITE_SPOTIFY_API_AUTH_URL}?${requestQueries}`}>
+      User Authorization
     </a>
   );
 };
 
-export const AuthorizationButton = React.memo(Component);
+export const UserAuthorizationLink = React.memo(Component);

@@ -3,14 +3,16 @@
     "browser": true,
     "es2021": true
   },
-  "extends": ["plugin:react/recommended", "standard-with-typescript", "prettier"],
+  "extends": ["plugin:react/recommended", "plugin:react-hooks/recommended", "standard-with-typescript", "prettier"],
   "overrides": [],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["strict-dependencies", "react"],
+  "plugins": ["strict-dependencies", "react", "react-hooks"],
   "rules": {
-    "semi": "warn"
+    "semi": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

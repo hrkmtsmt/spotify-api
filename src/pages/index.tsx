@@ -1,8 +1,6 @@
-import React, { useCallback, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
-import { AuthorizationButton } from '@src/components/RequestUserAuthorization';
-import { refreshTokenPostResponseState } from '@src/atoms/refreshTokenPostResponse';
+import { apiToken } from '@src/api/token';
 
 const endpoints = [
   {
@@ -24,12 +22,9 @@ const endpoints = [
 ];
 
 export const Index: React.FC = () => {
-  const refreshTokenPostResponse = useRecoilValue(
-    refreshTokenPostResponseState
-  );
+  const [accessToken, setAccessToken] = useState('');
 
   const [someSpotifyId, setSomeSpotifyId] = useState('');
-
   const onChangeSomeSpotifyId = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setSomeSpotifyId(e.target.value);
@@ -37,8 +32,7 @@ export const Index: React.FC = () => {
     [someSpotifyId]
   );
 
-  const [endpoint, setEndpoint] = useState<string>('albums');
-
+  const [endpoint, setEndpoint] = useState<string>(endpoints[0].id);
   const onChangeEndpoint = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setEndpoint(e.target.value);
@@ -47,26 +41,26 @@ export const Index: React.FC = () => {
   );
 
   const [spotifyData, setSpotifyData] = useState<any>();
-
   const onClickRequest = useCallback(async () => {
     const { data } = await axios.get<any>(
-      `${import.meta.env.VITE_SPOTIFY_URL}/${endpoint}/${someSpotifyId}`,
+      `${import.meta.env.VITE_SPOTIFY_API_URL}/${endpoint}/${someSpotifyId}`,
       {
         headers: {
-          Authorization: `Bearer ${refreshTokenPostResponse.access_token}`
+          Authorization: `Bearer ${accessToken}`
         }
       }
     );
     setSpotifyData(data);
   }, [someSpotifyId, endpoint]);
 
-  if (!refreshTokenPostResponse.access_token) {
-    return (
-      <div>
-        <AuthorizationButton />
-      </div>
-    );
-  }
+  useEffect(() => {
+    (async () => {
+      const accessTokenPostResponse = await apiToken.postAccessToken();
+      if (!accessTokenPostResponse || accessTokenPostResponse instanceof Error)
+        return;
+      setAccessToken(accessTokenPostResponse.access_token);
+    })();
+  }, []);
 
   return (
     <div>
