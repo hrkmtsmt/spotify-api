@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import axios from 'axios';
 import { refreshTokenPostResponseState } from '@src/atoms/refreshTokenPostResponse';
-import { ENV, ENCODED_CLIENT_ID_AND_CLIENT_SECRET } from '@src/env';
+import { ENCODED_CLIENT_ID_AND_CLIENT_SECRET } from '@src/env';
 import type { RefreshTokenPostResponse } from '@src/atoms/refreshTokenPostResponse';
 
 export type AccessTokenPostResponse = {
@@ -28,12 +28,12 @@ export const Callback: React.FC = () => {
 
         const accessTokenPostResponse =
           await axios.post<AccessTokenPostResponse>(
-            ENV.SPOTIFY_TOKEN_API_URL,
+            import.meta.env.VITE_SPOTIFY_TOKEN_API_URL,
             {
               grant_type: 'authorization_code',
               code,
-              redirect_uri: ENV.REDIRECT_URI,
-              client_id: ENV.CLIENT_ID,
+              redirect_uri: import.meta.env.VITE_REDIRECT_URI,
+              client_id: import.meta.env.VITE_CLIENT_ID,
               code_verifier: 'code_verifier'
             },
             {
@@ -46,11 +46,11 @@ export const Callback: React.FC = () => {
 
         const refreshTokenPostResponse =
           await axios.post<RefreshTokenPostResponse>(
-            ENV.SPOTIFY_TOKEN_API_URL,
+            import.meta.env.VITE_SPOTIFY_TOKEN_API_URL,
             {
               grant_type: 'refresh_token',
               refresh_token: accessTokenPostResponse.data.refresh_token,
-              client_id: ENV.CLIENT_ID
+              client_id: import.meta.env.VITE_CLIENT_ID
             },
             {
               headers: {

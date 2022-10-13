@@ -3,7 +3,6 @@ import { useRecoilValue } from 'recoil';
 import axios from 'axios';
 import { AuthorizationButton } from '@src/components/RequestUserAuthorization';
 import { refreshTokenPostResponseState } from '@src/atoms/refreshTokenPostResponse';
-import { ENV } from '@src/env';
 
 const endpoints = [
   {
@@ -51,7 +50,7 @@ export const Index: React.FC = () => {
 
   const onClickRequest = useCallback(async () => {
     const { data } = await axios.get<any>(
-      `${ENV.SPOTIFY_URL}/${endpoint}/${someSpotifyId}`,
+      `${import.meta.env.VITE_SPOTIFY_URL}/${endpoint}/${someSpotifyId}`,
       {
         headers: {
           Authorization: `Bearer ${refreshTokenPostResponse.access_token}`
